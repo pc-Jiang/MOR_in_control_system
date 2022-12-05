@@ -61,14 +61,14 @@ class Linear_Dynamic_System(Dynamic_System):
         if not ('A' in sys):
             A0 = wishart.rvs(200, 2 * np.eye(self.dim_x, dtype='float32'))
             [_, eig_vec] = nla.eig(A0)
-            eig_val = np.diag(nrd.random(self.dim_x))
-            # set eigenvalues no larger than 1 so that it would not blow up
+            eig_val = (np.diag(nrd.random(self.dim_x) - 0.5) ) * 2
+            # set abs eigenvalues no larger than 1 so that it would not blow up
             eig_val = eig_val.astype(np.float32)
             sys['A'] = eig_vec @ eig_val @ np.transpose(eig_vec)
         if not ('B' in sys): 
-            sys['B'] = nrd.rand(self.dim_x, self.dim_u)
+            sys['B'] = nrd.randn(self.dim_x, self.dim_u) * 0.1
         if not ('C' in sys):
-            sys['C'] = nrd.rand(self.dim_y, self.dim_x)
+            sys['C'] = nrd.randn(self.dim_y, self.dim_x) * 0.1
             sys['C'] = sys['C'].astype(np.float32)
 
         for k, v in sys.items():

@@ -1,6 +1,7 @@
 from models import AE_linear, AE_nonlinear
 from DynamicSystem import Linear_Dynamic_System, Dynamic_System
 import torch
+import numpy as np
 
 class AE_Reduced_System(Dynamic_System):
     
@@ -67,12 +68,15 @@ class POD_Reduced_System(Linear_Dynamic_System):
     def fit(self, x):
         U, _, _ = np.linalg.svd(x)
         self.Ur = Ur = U[..., :self.dim_x]
-        self.sys = self.init_coef({'A': Ur.T @ self.original['A'] @ Ur,
-                                   'B': Ur.T @ self.original['B'],
-                                   'C': self.original['C'] @ Ur})
+        self.sys = self.init_coef({'A': Ur.T @ self.original.sys['A'] @ Ur,
+                                   'B': Ur.T @ self.original.sys['B'],
+                                   'C': self.original.sys['C'] @ Ur})
+        rec_x = Ur @ Ur.T @ x
+        rec_y = self.original.sys['C'] @ rec_x
+        return rec_x, rec_y
     def step(self, x, u):
         return super().step(x, u)
     def compress(self, x):
-        return Ur.T @ x
-    def uncompress(self, x):
-        return Ur @ x
+        return self.Ur.T @ x
+    def decompress(self, x):
+        return self.Ur @ x

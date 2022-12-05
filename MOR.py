@@ -68,8 +68,8 @@ class POD_Reduced_System(Linear_Dynamic_System):
         U, _, _ = np.linalg.svd(x)
         self.Ur = Ur = U[..., :self.dim_x]
         self.sys = self.init_coef({'A': Ur.T @ self.original['A'] @ Ur,
-                               'B': Ur.T @ self.original['B'],
-                               'C': self.original['C'] @ Ur})
+                                   'B': Ur.T @ self.original['B'],
+                                   'C': self.original['C'] @ Ur})
     def step(self, x, u):
         return super().step(x, u)
     def compress(self, x):

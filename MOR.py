@@ -59,3 +59,20 @@ class AE_Reduced_System(Dynamic_System):
 
     def decompress(self, x):
         return self.model.decoder(torch.from_numpy(x).float().reshape(1, -1)).reshape(-1).detach().numpy()
+
+class POD_Reduced_System(Linear_Dynamic_System):
+    def __init__(self, original_sys, dim_x_reduct):
+        super().__init__(dim_x_reduct, original_sys.dim_u, original_sys.dim_y)
+        self.original = original_sys
+    def fit(self, x):
+        U, _, _ = np.linalg.svd(x)
+        self.Ur = Ur = U[..., :self.dim_x]
+        self.sys = self.init_coef({'A': Ur.T @ self.original['A'] @ Ur,
+                               'B': Ur.T @ self.original['B'],
+                               'C': self.original['C'] @ Ur})
+    def step(self, x, u):
+        return super().step(x, u)
+    def compress(self, x):
+        return Ur.T @ x
+    def uncompress(self, x):
+        return Ur @ x

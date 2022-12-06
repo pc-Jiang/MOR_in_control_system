@@ -1,7 +1,7 @@
 from DynamicSystem import Linear_Dynamic_System
 import os
 import numpy.random as nrd
-from models import AE_Reduced_System, balanced_truncated
+from models import AE_Reduced_System
 import numpy as np
 from util import mse
 

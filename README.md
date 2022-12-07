@@ -1,45 +1,58 @@
-# Project: Model Order Reduction (MOR) in Control System
-### Course: DSC 210: Linear Algebra/Data Science, FA22@UCSD
-### Instructor: Dr. Tsui-wei Weng
+# Model Order Reduction (MOR) in Control System
+Author: Pengcen Jiang, Yi Gu, Shibo Hao
+Course: DSC 210: Linear Algebra/Data Science, FA22@UCSD
+Instructor: Dr. Tsui-wei Weng
 
-#### Instructions: 
+### Instructions
 - Ensure that the following libraries are installed in python 3 environment:
     - numpy
     - torch
     - matplotlib
     - scipy
-- Open MOR_in_control_system.ipynb and run all the cells of the notebook.
+- Open `MOR_in_control_system.ipynb` and run all the cells of the notebook.
 
-#### Results: 
-We have a linear time-invariant system: 
-$$
-\mathbf{x}_{t} = \mathbf{A} \mathbf{x}_{t-1} + \mathbf{B} \mathbf{u}_t
-\mathbf{y}_t = \mathbf{C} \mathbf{x}_t
-$$
+### Repository Structure
+- `DynamicSystem.py`: Contains the basic classes of a dynamic system, and a linear dynamic system.
+- `models.py`: Contains classes of neural network models.
+- `MOR.py`: The implementation of two MOR methods. They are encapsulated as subclass of a dynamic system.
+- `util.py`: Helper functions.
+- `MOR_in_control_system.ipynb`: A notebook for conducting experiment and presenting the results.
 
+### Primary Results 
 
-- Predictions results of Proper orthognal decomposition (POD) and Autoencoder (AE) with nonlinearity
+Here we show all the numeric and figurative results. Please refer to our report for the detailed settings of the experiment and  the analysis of the results.
 
-Predictions on training data, y:
+#### Fitting
+| Metric   | POD    | AE     |
+| -------- | ------ | ------ |
+| MSE of X | 0.0077 | 0.0076 |
+| MSE of Y | 0.0028 | 0.0038 |
 
+![Picture1.png](figures/Picture1.png)
 
-Restored x of training data: 
+![Picture2.png](figures/Picture2.png)
 
+#### Generalization
 
-Predictions on test data: 
+| Metric   | POD    | AE     |
+| -------- | ------ | ------ |
+| MSE of X | 0.0121 | 1.9652 |
+| MSE of Y | 0.0034 | 0.0549 |
 
+![Picture3.png](README.assets/Picture3-16703745776162.png)
 
-Restored x of test data: 
+![Picture4.png](README.assets/Picture4-16703745776141.png)
 
-- Predictions results of Proper orthognal decomposition (POD) and Autoencoder (AE) without nonlinearity
+#### Replacing AE with Linear AE
 
-Predictions on training data, y:
+![Picture5.png](README.assets/Picture5.png)
 
+![Picture6.png](README.assets/Picture6.png)
 
-Restored x of training data: 
+#### Reduction Dimension
 
+![Picture11.png](README.assets/Picture11.png)
 
-Predictions on test data: 
+![Picture12.png](README.assets/Picture12.png)
 
-
-Restored x of test data: 
+![Picture13.png](README.assets/Picture13.png)
